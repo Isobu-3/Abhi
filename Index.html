@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ABXZ.EFX | Visual Artist & Editor</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Default Theme: Teal & Orange (normal) */
+      --bg-primary: #0a0a0a;
+      --text-primary: #f0e7d8;
+      --text-secondary: #cbb295;
+      --text-muted: #b8a08b;
+      --gradient-start: #f9b47e;
+      --gradient-mid: #e07a3d;
+      --gradient-end: #c45a2c;
+      --overlay-gradient: radial-gradient(circle at 30% 40%, rgba(255, 100, 30, 0.08) 0%, transparent 60%),
+                          linear-gradient(180deg, rgba(10, 20, 30, 0.6) 0%, rgba(20, 10, 5, 0.5) 100%);
+      --border-color: rgba(255, 140, 50, 0.08);
+      --card-bg: rgba(20, 18, 16, 0.7);
+      --card-border: rgba(255, 140, 60, 0.15);
+      --reel-overlay: linear-gradient(180deg, rgba(255, 140, 40, 0.2) 0%, rgba(200, 80, 20, 0.15) 50%, rgba(10, 10, 20, 0.6) 100%);
+      --btn-bg: rgba(255, 120, 40, 0.15);
+      --btn-border: #f97c3e;
+      --btn-text: #f9b68b;
+      --btn-hover-bg: #f4601e;
+      --btn-hover-shadow: #f4601e;
+      --progress-bar: linear-gradient(90deg, #f9b47e, #f4601e);
+      --glass-bg: rgba(20, 18, 16, 0.7);
+      --accent-color: #f97c3e;
+      --hover-glow: rgba(255, 100, 20, 0.5);
+      --nav-border: rgba(255, 140, 50, 0.2);
+      --logo-gradient: linear-gradient(135deg, #f9b47e, #e36d2b);
+      --link-color: #cfb69b;
+      --link-hover: #ff9f5c;
+    }
+
+    /* Blue Theme */
+    body.blue-theme {
+      --bg-primary: #050a14;
+      --text-primary: #d8e4f0;
+      --text-secondary: #95b8d9;
+      --text-muted: #8aa0b8;
+      --gradient-start: #7ea8d9;
+      --gradient-mid: #3d6ee0;
+      --gradient-end: #2c5ac4;
+      --overlay-gradient: radial-gradient(circle at 30% 40%, rgba(30, 100, 255, 0.08) 0%, transparent 60%),
+                          linear-gradient(180deg, rgba(10, 20, 40, 0.6) 0%, rgba(5, 10, 20, 0.5) 100%);
+      --border-color: rgba(50, 140, 255, 0.08);
+      --card-bg: rgba(16, 18, 30, 0.7);
+      --card-border: rgba(60, 140, 255, 0.15);
+      --reel-overlay: linear-gradient(180deg, rgba(40, 140, 255, 0.2) 0%, rgba(20, 80, 200, 0.15) 50%, rgba(10, 10, 30, 0.6) 100%);
+      --btn-bg: rgba(40, 120, 255, 0.15);
+      --btn-border: #3e7cf9;
+      --btn-text: #8bb6f9;
+      --btn-hover-bg: #1e5af4;
+      --btn-hover-shadow: #1e5af4;
+      --progress-bar: linear-gradient(90deg, #7ea8d9, #1e5af4);
+      --glass-bg: rgba(16, 18, 30, 0.7);
+      --accent-color: #3e7cf9;
+      --hover-glow: rgba(30, 90, 255, 0.5);
+      --nav-border: rgba(50, 140, 255, 0.2);
+      --logo-gradient: linear-gradient(135deg, #7ea8d9, #3d6ee0);
+      --link-color: #95b8d9;
+      --link-hover: #5c9fff;
+    }
+
+    /* Red Theme */
+    body.red-theme {
+      --bg-primary: #140a05;
+      --text-primary: #f0d8d0;
+      --text-secondary: #d99580;
+      --text-muted: #b88a7a;
+      --gradient-start: #f08b7e;
+      --gradient-mid: #e03d34;
+      --gradient-end: #c42c20;
+      --overlay-gradient: radial-gradient(circle at 30% 40%, rgba(255, 30, 30, 0.08) 0%, transparent 60%),
+                          linear-gradient(180deg, rgba(40, 10, 10, 0.6) 0%, rgba(30, 5, 5, 0.5) 100%);
+      --border-color: rgba(255, 50, 50, 0.08);
+      --card-bg: rgba(30, 16, 16, 0.7);
+      --card-border: rgba(255, 60, 60, 0.15);
+      --reel-overlay: linear-gradient(180deg, rgba(255, 40, 40, 0.2) 0%, rgba(200, 20, 20, 0.15) 50%, rgba(30, 10, 10, 0.6) 100%);
+      --btn-bg: rgba(255, 40, 40, 0.15);
+      --btn-border: #f93e3e;
+      --btn-text: #f98b8b;
+      --btn-hover-bg: #f41e1e;
+      --btn-hover-shadow: #f41e1e;
+      --progress-bar: linear-gradient(90deg, #f08b7e, #f41e1e);
+      --glass-bg: rgba(25, 15, 15, 0.7);
+      --accent-color: #f93e3e;
+      --hover-glow: rgba(255, 30, 30, 0.5);
+      --nav-border: rgba(255, 50, 50, 0.2);
+      --logo-gradient: linear-gradient(135deg, #f08b7e, #e03d34);
+      --link-color: #d99580;
+      --link-hover: #ff5c40;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.4;
+      overflow: hidden;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      height: 100vh;
+      width: 100vw;
+      transition: background 0.7s ease, color 0.7s ease;
+    }
+
+    #smooth-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #smooth-content {
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+    }
+
+    section {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-color);
+      transition: background 0.7s ease, border-color 0.7s ease;
+    }
+
+    section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--overlay-gradient);
+      pointer-events: none;
+      z-index: 1;
+      transition: background 0.7s ease;
+    }
+
+    h1, h2 {
+      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      transition: all 0.7s ease;
+    }
+
+    h1 {
+      font-size: clamp(3.5rem, 12vw, 7rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: clamp(2.2rem, 7vw, 4rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      transition: color 0.7s ease;
+    }
+
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 2.5rem;
+      padding: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 40px var(--hover-glow);
+      transition: all 0.7s ease;
+    }
+
+    .reel-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 1400px;
+    }
+
+    .reel-card {
+      position: relative;
+      width: 300px;
+      height: 530px;
+      background: #111;
+      border-radius: 2rem;
+      overflow: hidden;
+      box-shadow: 0 30px 40px rgba(0,0,0,0.7), 0 0 30px var(--hover-glow);
+      transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), 
+                  box-shadow 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+      z-index: 2;
+    }
+
+    .reel-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 40px 60px var(--hover-glow);
+    }
+
+    /* Scroll-blocker overlay for iframes */
+    .reel-scroll-blocker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      background: transparent;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .reel-card:hover .reel-scroll-blocker {
+      pointer-events: none;
+    }
+
+    .reel-embed-wrapper {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #000;
+    }
+
+    .reel-embed-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      pointer-events: none;
+    }
+
+    .reel-card:hover .reel-embed-wrapper iframe {
+      pointer-events: auto;
+    }
+
+    .reel-color-grade {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--reel-overlay);
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 3;
+      transition: background 0.7s ease;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(8, 8, 8, 0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--nav-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      font-weight: 500;
+      transition: border-color 0.7s ease, background 0.7s ease;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: var(--logo-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.03em;
+      transition: all 0.7s ease;
+    }
+
+    .nav-links a {
+      color: var(--link-color);
+      text-decoration: none;
+      margin-left: 2.5rem;
+      font-size: 1rem;
+      transition: 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover {
+      color: var(--link-hover);
+      text-shadow: 0 0 12px var(--accent-color);
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem;
+      background: #050505;
+      color: #7a6a5c;
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--btn-text);
+      padding: 0.9rem 2.2rem;
+      border-radius: 4rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+      text-decoration: none;
+      margin-top: 1.5rem;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: var(--btn-hover-bg);
+      color: #fff;
+      border-color: var(--btn-hover-bg);
+      box-shadow: 0 0 30px var(--btn-hover-shadow);
+    }
+
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--progress-bar);
+      z-index: 101;
+      transition: width 0.1s linear, background 0.7s ease;
+    }
+
+    /* Theme cards */
+    .theme-card {
+      cursor: pointer;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .theme-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 30px var(--accent-color);
+    }
+
+    .theme-card.active {
+      outline: 3px solid var(--accent-color);
+      outline-offset: 4px;
+      transform: scale(1.05);
+    }
+
+    .theme-card.active::after {
+      content: "✓ Active";
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-color);
+      color: #fff;
+      padding: 0.3rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      section {
+        padding: 3rem 1rem;
+      }
+      .reel-card {
+        width: 260px;
+        height: 460px;
+      }
+      nav {
+        padding: 1rem 1.5rem;
+      }
+      .nav-links a {
+        margin-left: 1.2rem;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress" id="progress-bar"></div>
+
+  <nav>
+    <div class="logo">ABXZ.EFX</div>
+    <div class="nav-links">
+      <a data-scroll-to="home">Home</a>
+      <a data-scroll-to="reels">Reels</a>
+      <a data-scroll-to="about">About</a>
+      <a data-scroll-to="grading">Color Grade</a>
+      <a data-scroll-to="contact">Contact</a>
+    </div>
+  </nav>
+
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+      
+      <!-- 1. Home -->
+      <section id="home">
+        <div style="position: relative; z-index: 2; text-align: center;">
+          <h1>_abxz.efx</h1>
+          <p class="subtitle">Visual Artist • Editor • Colorist</p>
+          <p style="max-width: 600px; margin: 1.8rem auto; color: var(--text-secondary); font-size: 1.2rem; transition: color 0.7s ease;">
+            Crafting cinematic stories with bold color & smooth motion.
+          </p>
+          <a data-scroll-to="reels" class="btn">Watch Reels</a>
+        </div>
+        <div style="position: absolute; bottom: 30px; font-size: 0.8rem; color: var(--text-muted); z-index:2; transition: color 0.7s ease;">
+          ↓ scroll
+        </div>
+      </section>
+
+      <!-- 2. Reels (no labels, scroll-blocker fix) -->
+      <section id="reels">
+        <h2 style="z-index:2;">Featured Reels</h2>
+        <div class="reel-grid" style="z-index:2; margin-top:2rem;">
+          
+          <!-- Reel 1 -->
+          <div class="reel-card">
+            <div class="reel-embed-wrapper">
+              <iframe 
+                src="https://www.instagram.com/reel/DYKBIEOhupu/embed/captioned" 
+                allowtransparency="true" 
+                scrolling="no" 
+                frameborder="0"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="reel-scroll-blocker"></div>
+            <div class="reel-color-grade"></div>
+          </div>
+          
+          <!-- Reel 2 -->
+          <div class="reel-card">
+            <div class="reel-embed-wrapper">
+              <iframe 
+                src="https://www.instagram.com/reel/DWb2nb8yQHK/embed/captioned" 
+                allowtransparency="true" 
+                scrolling="no" 
+                frameborder="0"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="reel-scroll-blocker"></div>
+            <div class="reel-color-grade"></div>
+          </div>
+          
+          <!-- Reel 3 -->
+          <div class="reel-card">
+            <div class="reel-embed-wrapper">
+              <iframe 
+                src="https://www.instagram.com/reel/DTnHrujE239/embed/captioned" 
+                allowtransparency="true" 
+                scrolling="no" 
+                frameborder="0"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="reel-scroll-blocker"></div>
+            <div class="reel-color-grade"></div>
+          </div>
+        </div>
+        <p style="z-index:2; margin-top:2rem; color: var(--text-muted); transition: color 0.7s ease;">
+          @_abxz.efx • Original Reels
+        </p>
+      </section>
+
+      <!-- 3. About -->
+      <section id="about">
+        <div class="glass-card" style="max-width: 700px; z-index:2; text-align:center;">
+          <h2 style="font-size:2.5rem;">About</h2>
+          <p style="font-size:1.2rem; color: var(--text-secondary); transition: color 0.7s ease;">
+            ABXZ.EFX is a digital creator focused on high-impact visual storytelling. 
+            From short-form reels to color-graded cinematic edits, each frame is treated with precision.
+          </p>
+          <p style="margin-top:1.5rem; color: var(--text-muted); transition: color 0.7s ease;">
+            Based in India • Available for collaborations
+          </p>
+        </div>
+      </section>
+
+      <!-- 4. Color Grading / Theme Switcher -->
+      <section id="grading">
+        <h2 style="z-index:2; text-align:center;">Signature Grade</h2>
+        <p style="z-index:2; color: var(--text-muted); margin-bottom: 2rem; transition: color 0.7s ease;">
+          Click a theme to apply it to the entire page
+        </p>
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; z-index:2; max-width:1000px;">
+          
+          <!-- Blue Theme Card -->
+          <div class="theme-card" data-theme="blue" 
+               style="background:linear-gradient(135deg, #0a1628, #1a2a4a); padding:2rem; border-radius:2rem; width:250px; border-top:4px solid #3e7cf9; text-align:center;">
+            <h3 style="color:#7ea8d9; font-size:1.4rem;">🔵 Blue Cinema</h3>
+            <p style="color:#8aa0b8; margin-top:0.5rem;">Cool tones, deep shadows, icy highlights</p>
+            <p style="color:#5c8acc; font-size:0.8rem; margin-top:1rem;">Click to apply</p>
+          </div>
+          
+          <!-- Normal Theme Card (Teal & Orange) -->
+          <div class="theme-card active" data-theme="normal" 
+               style="background:linear-gradient(135deg, #1c1612, #2a1f18); padding:2rem; border-radius:2rem; width:250px; border-top:4px solid #f97c3e; text-align:center;">
+            <h3 style="color:#f9b47e; font-size:1.4rem;">🟠 Warm Amber</h3>
+            <p style="color:#b8a08b; margin-top:0.5rem;">Rich skin tones, golden highlights</p>
+            <p style="color:#e07a3d; font-size:0.8rem; margin-top:1rem;">Current • Click to keep</p>
+          </div>
+          
+          <!-- Red Theme Card -->
+          <div class="theme-card" data-theme="red" 
+               style="background:linear-gradient(135deg, #28100a, #3a1414); padding:2rem; border-radius:2rem; width:250px; border-top:4px solid #f93e3e; text-align:center;">
+            <h3 style="color:#f08b7e; font-size:1.4rem;">🔴 Crimson Fire</h3>
+            <p style="color:#b88a7a; margin-top:0.5rem;">Bold reds, intense warmth, dramatic contrast</p>
+            <p style="color:#d94030; font-size:0.8rem; margin-top:1rem;">Click to apply</p>
+          </div>
+        </div>
+        <p style="z-index:2; margin-top:2rem; color: var(--text-muted); font-size:0.9rem; transition: color 0.7s ease;">
+          Theme changes the entire page's color grading
+        </p>
+      </section>
+
+      <!-- 5. Contact -->
+      <section id="contact">
+        <h2 style="z-index:2;">Let's Create</h2>
+        <p style="z-index:2; color: var(--text-secondary); margin:1rem 0; transition: color 0.7s ease;">
+          DM on Instagram @_abxz.efx
+        </p>
+        <a href="https://www.instagram.com/_abxz.efx" target="_blank" class="btn" style="z-index:2;">Instagram Profile</a>
+        <p style="z-index:2; margin-top:2rem; font-size:0.8rem; color: var(--text-muted); transition: color 0.7s ease;">
+          Professional Static Page • Zero Loading Delay
+        </p>
+      </section>
+
+      <footer>
+        <p>© 2026 ABXZ.EFX — designed with cinematic color grading. All reels from @_abxz.efx</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Instagram Embed Script -->
+  <script async src="https://www.instagram.com/embed.js"></script>
+
+  <script>
+    (function() {
+      // ============ ULTRA-SMOOTH SCROLL ENGINE ============
+      const wrapper = document.getElementById('smooth-wrapper');
+      const content = document.getElementById('smooth-content');
+      const progressBar = document.getElementById('progress-bar');
+      
+      let currentY = 0;
+      let targetY = 0;
+      const ease = 0.075;
+      let height = 0;
+      let scrollHeight = 0;
+      let isScrolling = false;
+      let rafId = null;
+      
+      let touchStartY = 0;
+      let touchCurrentY = 0;
+      let velocity = 0;
+      let isTouching = false;
+      
+      function updateHeight() {
+        height = wrapper.offsetHeight;
+        scrollHeight = content.scrollHeight;
+      }
+      
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+      
+      function lerp(start, end, factor) {
+        return start + (end - start) * factor;
+      }
+      
+      function updateScroll() {
+        const diff = targetY - currentY;
+        const absDiff = Math.abs(diff);
+        
+        let dynamicEase = ease;
+        if (absDiff > 100) dynamicEase = 0.12;
+        else if (absDiff < 1) dynamicEase = 0.2;
+        
+        currentY = lerp(currentY, targetY, dynamicEase);
+        content.style.transform = `translate3d(0, ${-currentY}px, 0)`;
+        
+        const maxScroll = scrollHeight - height;
+        if (maxScroll > 0) {
+          const progress = (currentY / maxScroll) * 100;
+          progressBar.style.width = `${Math.min(progress, 100)}%`;
+        }
+        
+        if (Math.abs(diff) > 0.05 || isScrolling) {
+          rafId = requestAnimationFrame(updateScroll);
+        } else {
+          rafId = null;
+          isScrolling = false;
+        }
+      }
+      
+      function startRaf() {
+        if (!rafId) {
+          isScrolling = true;
+          rafId = requestAnimationFrame(updateScroll);
+        }
+      }
+      
+      function onWheel(e) {
+        e.preventDefault();
+        const maxScroll = scrollHeight - height;
+        let delta = e.deltaY;
+        if (Math.abs(delta) < 10) delta *= 2;
+        targetY += delta * 1.2;
+        targetY = clamp(targetY, 0, maxScroll);
+        startRaf();
+      }
+      
+      function onTouchStart(e) {
+        isTouching = true;
+        touchStartY = e.touches[0].clientY;
+        touchCurrentY = touchStartY;
+        velocity = 0;
+      }
+      
+      function onTouchMove(e) {
+        if (!isTouching) return;
+        e.preventDefault();
+        const currentTouchY = e.touches[0].clientY;
+        const deltaY = touchCurrentY - currentTouchY;
+        touchCurrentY = currentTouchY;
+        velocity = deltaY;
+        const maxScroll = scrollHeight - height;
+        targetY += deltaY * 1.5;
+        targetY = clamp(targetY, 0, maxScroll);
+        startRaf();
+      }
+      
+      function onTouchEnd() {
+        isTouching = false;
+        const maxScroll = scrollHeight - height;
+        let momentum = velocity * 15;
+        const applyMomentum = () => {
+          if (Math.abs(momentum) < 0.5) return;
+          momentum *= 0.95;
+          targetY += momentum;
+          targetY = clamp(targetY, 0, maxScroll);
+          startRaf();
+          requestAnimationFrame(applyMomentum);
+        };
+        if (Math.abs(momentum) > 1) {
+          requestAnimationFrame(applyMomentum);
+        }
+      }
+      
+      function onKeyDown(e) {
+        const maxScroll = scrollHeight - height;
+        let delta = 0;
+        switch(e.key) {
+          case 'ArrowDown': delta = 100; break;
+          case 'ArrowUp': delta = -100; break;
+          case 'PageDown': delta = height * 0.8; break;
+          case 'PageUp': delta = -height * 0.8; break;
+          case 'Home': targetY = 0; startRaf(); return;
+          case 'End': targetY = maxScroll; startRaf(); return;
+          default: return;
+        }
+        if (delta !== 0) {
+          e.preventDefault();
+          targetY += delta;
+          targetY = clamp(targetY, 0, maxScroll);
+          startRaf();
+        }
+      }
+      
+      // ============ FIX: Allow scrolling over reel cards ============
+      // The scroll-blocker overlay captures wheel events and passes them to our engine
+      document.querySelectorAll('.reel-scroll-blocker').forEach(blocker => {
+        blocker.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const maxScroll = scrollHeight - height;
+          let delta = e.deltaY;
+          if (Math.abs(delta) < 10) delta *= 2;
+          targetY += delta * 1.2;
+          targetY = clamp(targetY, 0, maxScroll);
+          startRaf();
+        });
+        
+        blocker.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          isTouching = true;
+          touchStartY = e.touches[0].clientY;
+          touchCurrentY = touchStartY;
+          velocity = 0;
+        });
+        
+        blocker.addEventListener('touchmove', (e) => {
+          if (!isTouching) return;
+          e.preventDefault();
+          e.stopPropagation();
+          const currentTouchY = e.touches[0].clientY;
+          const deltaY = touchCurrentY - currentTouchY;
+          touchCurrentY = currentTouchY;
+          velocity = deltaY;
+          const maxScroll = scrollHeight - height;
+          targetY += deltaY * 1.5;
+          targetY = clamp(targetY, 0, maxScroll);
+          startRaf();
+        });
+        
+        blocker.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onTouchEnd();
+        });
+      });
+      
+      // Navigation
+      document.querySelectorAll('[data-scroll-to]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('data-scroll-to');
+          const targetSection = document.getElementById(targetId);
+          if (targetSection) {
+            targetY = targetSection.offsetTop;
+            startRaf();
+          }
+        });
+      });
+      
+      // ============ THEME SWITCHER ============
+      const themeCards = document.querySelectorAll('.theme-card');
+      
+      function setTheme(themeName) {
+        document.body.classList.remove('blue-theme', 'red-theme');
+        
+        if (themeName === 'blue') {
+          document.body.classList.add('blue-theme');
+        } else if (themeName === 'red') {
+          document.body.classList.add('red-theme');
+        }
+        
+        themeCards.forEach(card => {
+          card.classList.remove('active');
+          if (card.getAttribute('data-theme') === themeName) {
+            card.classList.add('active');
+          }
+        });
+        
+        localStorage.setItem('abxz-theme', themeName);
+        console.log(`🎨 Theme switched to: ${themeName}`);
+      }
+      
+      themeCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const theme = card.getAttribute('data-theme');
+          setTheme(theme);
+        });
+      });
+      
+      const savedTheme = localStorage.getItem('abxz-theme');
+      if (savedTheme) {
+        setTheme(savedTheme);
+      }
+      
+      // ============ INSTAGRAM EMBED REFRESH ============
+      function processInstagramEmbeds() {
+        if (window.instgrm) {
+          window.instgrm.Embeds.process();
+        }
+      }
+      
+      setTimeout(processInstagramEmbeds, 500);
+      setTimeout(processInstagramEmbeds, 1500);
+      setTimeout(processInstagramEmbeds, 3000);
+      
+      // ============ INITIALIZATION ============
+      // Attach wheel to wrapper for all general scrolling
+      wrapper.addEventListener('wheel', onWheel, { passive: false });
+      wrapper.addEventListener('touchstart', onTouchStart, { passive: false });
+      wrapper.addEventListener('touchmove', onTouchMove, { passive: false });
+      wrapper.addEventListener('touchend', onTouchEnd);
+      window.addEventListener('keydown', onKeyDown);
+      
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          updateHeight();
+          const maxScroll = scrollHeight - height;
+          targetY = clamp(targetY, 0, maxScroll);
+          startRaf();
+        }, 100);
+      });
+      
+      updateHeight();
+      content.style.transform = `translate3d(0, 0, 0)`;
+      
+      if (window.location.hash) {
+        setTimeout(() => {
+          const id = window.location.hash.substring(1);
+          const targetSection = document.getElementById(id);
+          if (targetSection) {
+            targetY = targetSection.offsetTop;
+            startRaf();
+          }
+        }, 100);
+      }
+      
+      console.log('✨ ABXZ.EFX — Reel labels removed, scroll fixed over iframes');
+      console.log('🖱️ Scrolling works everywhere, including over Instagram embeds');
+      console.log('🎨 Themes: Blue Cinema | Warm Amber | Crimson Fire');
+    })();
+  </script>
+</body>
+</html>
