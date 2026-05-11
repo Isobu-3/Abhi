@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>_abxz.efx | Official Portfolio</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<style>
+body{margin:0;background:#0b0b0b;color:#f5f1e8;font-family:Helvetica,Arial,sans-serif;overflow-x:hidden;scroll-behavior:smooth}
+canvas{position:fixed;top:0;left:0;z-index:-1}
+header{position:fixed;width:100%;padding:25px 60px;background:rgba(11,11,11,.6);backdrop-filter:blur(20px);display:flex;justify-content:space-between;z-index:100}
+section{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:clamp(20px,5vw,80px);opacity:0;transform:translateX(-120px) scale(.96);transition:0.65s cubic-bezier(.22,1,.36,1)}
+.visible{opacity:1;transform:translateX(0) scale(1)}
+.card{width:min(92vw,1000px);padding:clamp(24px,6vw,80px);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(8px);border-radius:28px}
+h1{font-size:5rem;letter-spacing:8px}p{font-size:1.2rem;color:#c9c2b3;line-height:1.8}.gold{color:#d6b36f}
+</style>
+</head>
+<body>
+<header><div>_abxz.efx</div><div>Official Creative Portfolio</div></header>
+<script>
+const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,1000);const renderer=new THREE.WebGLRenderer({alpha:true});renderer.setSize(innerWidth,innerHeight);document.body.appendChild(renderer.domElement);
+const tunnel=new THREE.Group();
+for(let i=0;i<40;i++){
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(8+i*1.5,0.03,16,80),new THREE.MeshBasicMaterial({color:0xd6b36f,transparent:true,opacity:0.35}));
+ ring.position.z=-i*8;
+ tunnel.add(ring);
+}
+scene.add(tunnel);camera.position.z=8;
+function animate(){requestAnimationFrame(animate);tunnel.children.forEach((r,i)=>{r.rotation.z+=0.002+i*0.00003});renderer.render(scene,camera)}animate();
+const pages=[['Abhxz','Video Creator • Editor • Photography'],['Creative Editing','#videocretor #editor cinematic edits'],['Visual Storytelling','Professional paid promotion and collaboration edits'],['Photography','Premium visual composition and content creation'],['Brand Collaboration','Paid collab, paid edits, luxury visual campaigns'],['Creative Identity','Some vibezzz - cinematic luxury direction'],['About Abhxz','Creative visual editor focused on cinematic storytelling, premium graphic design, photography and strategic brand promotion. Crafting luxury digital experiences through editing and visual direction.'],['Connect','Follow on Instagram or connect directly on WhatsApp']];
+pages.forEach((p,i)=>document.write(`<section style='transform:translateX(${i%2===0?'-160px':'160px'})'><div class='card'><h1>${p[0]}</h1><p>${p[1]}</p><p class='gold'></p>${p[0]==='Connect'?`<div style='margin-top:40px;display:flex;gap:20px;justify-content:center'><a href='https://www.instagram.com/_abxz.efx/' style='padding:18px 40px;background:#d6b36f;color:#000;text-decoration:none;border-radius:50px;font-weight:bold'>Instagram</a><a href='https://wa.me/' style='padding:18px 40px;background:#fff;color:#000;text-decoration:none;border-radius:50px;font-weight:bold'>WhatsApp</a></div>`:''}</div></section>`));
+const ob=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible')}}),{threshold:0.08,rootMargin:'0px 0px -80px 0px'});document.querySelectorAll('section').forEach(s=>ob.observe(s));
+window.addEventListener('scroll',()=>{camera.position.z=8-scrollY*0.01;tunnel.rotation.z=scrollY*0.0004;});
+</script>
+</body>
+</html>
